@@ -570,6 +570,12 @@ class ContentController(BaseController, RewriterApp):
         except:
             pass
 
+        # don't include xhtml in accept to force sites to server html, if possible
+        http_accept = request.environ.get('HTTP_ACCEPT')
+        if http_accept:
+            request.environ['HTTP_ACCEPT'] = http_accept.replace('application/xhtml+xml,', '')
+
+
         #TODO: generalize
         if wb_url.endswith('&spf=navigate') and wb_url.startswith('mp_/https://www.youtube.com'):
             wb_url = wb_url.replace('&spf=navigate', '')
